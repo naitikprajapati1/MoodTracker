@@ -249,53 +249,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderMonthView = () => {
         calendarContainer.innerHTML = '';
         
-        // Update month display
-        currentMonthElement.textContent = currentViewDate.toLocaleDateString('en-US', { 
+        // Update current month display
+        currentMonthElement.textContent = currentViewDate.toLocaleDateString('en-US', {
             month: 'long',
             year: 'numeric'
         });
         
-        const month = currentViewDate.getMonth();
-        const year = currentViewDate.getFullYear();
+        // Get first day of the month
+        const firstDay = new Date(currentViewDate.getFullYear(), currentViewDate.getMonth(), 1);
+        const lastDay = new Date(currentViewDate.getFullYear(), currentViewDate.getMonth() + 1, 0);
+        const startingDay = firstDay.getDay(); // 0 = Sunday, 6 = Saturday
         
-        // First day of the month
-        const firstDay = new Date(year, month, 1);
-        const startingDayOfWeek = firstDay.getDay(); // 0 for Sunday
-        
-        // Last day of the month
-        const lastDay = new Date(year, month + 1, 0);
-        const daysInMonth = lastDay.getDate();
-        
-        // Add empty cells for days before the first day of the month
-        for (let i = 0; i < startingDayOfWeek; i++) {
-            const emptyDay = document.createElement('div');
-            emptyDay.className = 'calendar-day empty';
-            calendarContainer.appendChild(emptyDay);
-        }
-        
-        // Add cells for days of the month
-        for (let day = 1; day <= daysInMonth; day++) {
+        // Create calendar grid
+        for (let i = 0; i < 42; i++) { // 6 weeks * 7 days = 42
             const dayElement = document.createElement('div');
             dayElement.className = 'calendar-day';
             
-            const dayDate = new Date(year, month, day);
-            const dayString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const entry = moodEntries.find(e => e.date === dayString);
+            // Calculate the actual date for this cell
+            const currentDate = new Date(firstDay);
+            currentDate.setDate(currentDate.getDate() + (i - startingDay));
             
-            if (entry) {
+            // Check if this date is in the current month
+            if (currentDate.getMonth() === currentViewDate.getMonth()) {
+                const dayNumber = currentDate.getDate();
+                const dateString = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
+                
+                // Find mood entry for this date
+                const entry = moodEntries.find(e => e.date === dateString);
+                
                 dayElement.innerHTML = `
-                    <div class="day-number">${day}</div>
+                    <div class="day-number">${dayNumber}</div>
+                    ${entry ? `<div class="calendar-emoji">${getMoodEmoji(entry.mood)}</div>` : ''}
                 `;
-            } else {
-                dayElement.innerHTML = `
-                    <div class="day-number">${day}</div>
-                `;
-            }
-            
-            // Highlight today
-            const today = new Date();
-            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                dayElement.style.border = '2px solid var(--primary)';
+                
+                // Highlight today's date
+                if (dateString === getTodayString()) {
+                    dayElement.classList.add('today');
+                }
             }
             
             calendarContainer.appendChild(dayElement);
