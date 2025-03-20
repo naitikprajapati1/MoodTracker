@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Daily Mood Tracker</h1>
+            <p>Track your emotional well-being day by day</p>
+        </header>
+        
+        <section class="mood-selector">
+            <h2>How are you feeling today?</h2>
+            <div class="emoji-container">
+                <button class="emoji-btn" data-mood="happy">😊</button>
+                <button class="emoji-btn" data-mood="excited">😃</button>
+                <button class="emoji-btn" data-mood="neutral">😐</button>
+                <button class="emoji-btn" data-mood="sad">😔</button>
+                <button class="emoji-btn" data-mood="angry">😠</button>
+                <button class="emoji-btn" data-mood="anxious">😰</button>
+                <button class="emoji-btn" data-mood="tired">😴</button>
+                <button class="emoji-btn" data-mood="loved">🥰</button>
+            </div>
+           
+            
+            <button id="save-mood">Save Today's Mood</button>
+        </section>
+        
+        <section class="mood-history">
+            <h2>Your Mood History</h2>
+            <div class="view-toggle">
+                <button id="day-view-btn" class="active">Daily</button>
+                <button id="week-view-btn">Weekly</button>
+                <button id="month-view-btn">Monthly</button>
+            </div>
+            
+            <div id="day-view" class="timeline-view">
+                <!-- Daily mood entries will be added here -->
+            </div>
+            
+            <div id="week-view" class="weekly-view" style="display: none;">
+                <!-- Weekly mood summary will be added here -->
+            </div>
+            
+            <div id="month-view" style="display: none;">
+                <div class="month-navigation">
+                    <button id="prev-month-btn">Previous Month</button>
+                    <h3 id="current-month">March 2025</h3>
+                    <button id="next-month-btn">Next Month</button>
+                </div>
+                <div class="weekday-labels">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                <div id="calendar-container" class="calendar-view">
+                    <!-- Calendar will be generated here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+<script src="./app.js"></script>   
+</body>
+</html>
